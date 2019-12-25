@@ -1,0 +1,12 @@
+node_modules
+.expo
+
+# OSX
+.DS_Store
+
+# yarn
+yarn-debug.*
+yarn-error.*
+
+# Visual Studio Code
+.vscode
