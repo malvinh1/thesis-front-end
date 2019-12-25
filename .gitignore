@@ -1,4 +1,5 @@
 node_modules
+.expo
 
 # OSX
 .DS_Store
