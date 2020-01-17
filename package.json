@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit -p .",
     "jest": "jest --coverage --passWithNoTests",
     "test": "yarn lint && yarn typecheck && yarn format:check && yarn jest",
-    "generate": "apollo codegen:generate --endpoint=http://localhost:4000 --target=typescript --includes=src/graphql/**/*.ts --tagName=gql --outputFlat src/generated"
+    "generate": "apollo codegen:generate --endpoint=https://thesis-back-end.herokuapp.com/ --target=typescript --includes=src/graphql/**/*.ts --tagName=gql --outputFlat src/generated"
   },
   "prettier": {
     "bracketSpacing": true,

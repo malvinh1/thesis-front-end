@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, TextInput, Button } from 'exoflex';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Text, TextInput, Button, ActivityIndicator, Modal } from 'exoflex';
 import { useNavigation } from 'naviflex';
 import { useMutation } from '@apollo/react-hooks';
 
@@ -8,6 +8,7 @@ import { FONT_SIZE } from '../constants/fonts';
 import { COLORS } from '../constants/colors';
 import { REGISTER_USER } from '../graphql/mutations/registerMutation';
 import { Register_register, RegisterVariables } from '../generated/Register';
+import { validateEmail, validatePassword } from '../helpers/validation';
 
 export default function Register() {
   let { navigate } = useNavigation();
@@ -24,28 +25,54 @@ export default function Register() {
       navigate('Login');
     },
     onError(error) {
-      console.log(error.message);
+      let newError = error.message.split(':');
+      Alert.alert(newError[1]);
     },
   });
 
   let onPressRegister = async () => {
-    await register({
-      variables: {
-        name: nameValue,
-        email: emailValue,
-        password: passwordValue,
-        avatarId: 'ck5hmp3kp001a0767yad1y8xk',
-      },
-    });
+    if (validateEmail(emailValue) && validatePassword(passwordValue)) {
+      await register({
+        variables: {
+          name: nameValue,
+          email: emailValue,
+          password: passwordValue,
+          avatarId: 'ck5hswuojxdwt0b00qftbbjiu',
+        },
+      });
+    } else if (!validateEmail(emailValue)) {
+      Alert.alert(
+        'Email is not valid',
+        'Please fill the email again',
+        [{ text: 'OK' }],
+        { cancelable: false },
+      );
+    } else if (!validatePassword(passwordValue)) {
+      Alert.alert(
+        'Password is not valid',
+        'Please fill the password again',
+        [{ text: 'OK' }],
+        { cancelable: false },
+      );
+    } else {
+      Alert.alert('Unexpected Error', 'Please try again', [{ text: 'OK' }], {
+        cancelable: false,
+      });
+    }
   };
-
-  let onChangeTextName = (text: string) => setNameValue(text);
-  let onChangeTextEmail = (text: string) => setEmailValue(text);
-  let onChangeTextPassword = (text: string) => setPasswordValue(text);
-  let onChangeTextRePassword = (text: string) => setRePasswordValue(text);
 
   return (
     <View style={styles.flex}>
+      <Modal
+        contentContainerStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        animationType="fade"
+        visible={loadingRegister}
+      >
+        <ActivityIndicator size="large" color={COLORS.primaryColor} />
+      </Modal>
       <View style={styles.body}>
         <Text weight="medium" style={styles.title}>
           Register
@@ -55,7 +82,7 @@ export default function Register() {
           containerStyle={styles.textInput}
           label="Name"
           value={nameValue}
-          onChangeText={onChangeTextName}
+          onChangeText={setNameValue}
           autoFocus={true}
           autoCapitalize="words"
         />
@@ -64,10 +91,9 @@ export default function Register() {
           containerStyle={styles.textInput}
           label="Email Address"
           value={emailValue}
-          onChangeText={onChangeTextEmail}
+          onChangeText={setEmailValue}
           textContentType="emailAddress"
           autoCapitalize="none"
-          autoFocus={true}
           keyboardType="email-address"
         />
         <TextInput
@@ -75,7 +101,7 @@ export default function Register() {
           containerStyle={styles.textInput}
           label="Password"
           value={passwordValue}
-          onChangeText={onChangeTextPassword}
+          onChangeText={setPasswordValue}
           textContentType="password"
           secureTextEntry={true}
         />
@@ -84,7 +110,7 @@ export default function Register() {
           containerStyle={styles.textInput}
           label="Re-enter Password"
           value={rePasswordValue}
-          onChangeText={onChangeTextRePassword}
+          onChangeText={setRePasswordValue}
           textContentType="password"
           secureTextEntry={true}
         />

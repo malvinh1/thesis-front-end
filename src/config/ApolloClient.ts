@@ -17,7 +17,7 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 const uploadLink = createUploadLink({
-  uri: 'http://localhost:4000',
+  uri: 'https://thesis-back-end.herokuapp.com/',
   credentials: 'same-origin',
 });
 const link = ApolloLink.from([authLink, uploadLink]);

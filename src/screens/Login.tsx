@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, TextInput, Button } from 'exoflex';
+import { View, StyleSheet, Alert } from 'react-native';
+import { Text, TextInput, Button, ActivityIndicator, Modal } from 'exoflex';
 import { useNavigation } from 'naviflex';
 import { useMutation } from '@apollo/react-hooks';
 
@@ -8,6 +8,7 @@ import { FONT_SIZE } from '../constants/fonts';
 import { COLORS } from '../constants/colors';
 import { LOGIN_USER } from '../graphql/mutations/loginMutation';
 import { Login_login, LoginVariables } from '../generated/Login';
+import { validateEmail, validatePassword } from '../helpers/validation';
 
 export default function Login() {
   let { navigate } = useNavigation();
@@ -22,25 +23,52 @@ export default function Login() {
       navigate('Home');
     },
     onError(error) {
-      // TODO
-      console.log(error.message);
+      let newError = error.message.split(':');
+      Alert.alert(newError[1]);
     },
   });
 
-  let onChangeTextEmail = (text: string) => setEmailValue(text);
-  let onChangeTextPassword = (text: string) => setPasswordValue(text);
-
   let onPressLogin = async () => {
-    await login({
-      variables: {
-        email: emailValue,
-        password: passwordValue,
-      },
-    });
+    if (validateEmail(emailValue) && validatePassword(passwordValue)) {
+      await login({
+        variables: {
+          email: emailValue,
+          password: passwordValue,
+        },
+      });
+    } else if (!validateEmail(emailValue)) {
+      Alert.alert(
+        'Email is not valid',
+        'Please fill the email again',
+        [{ text: 'OK' }],
+        { cancelable: false },
+      );
+    } else if (!validatePassword(passwordValue)) {
+      Alert.alert(
+        'Password is not valid',
+        'Please fill the password again',
+        [{ text: 'OK' }],
+        { cancelable: false },
+      );
+    } else {
+      Alert.alert('Unexpected Error', 'Please try again', [{ text: 'OK' }], {
+        cancelable: false,
+      });
+    }
   };
 
   return (
     <View style={styles.flex}>
+      <Modal
+        contentContainerStyle={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        animationType="fade"
+        visible={loadingLogin}
+      >
+        <ActivityIndicator size="large" color={COLORS.primaryColor} />
+      </Modal>
       <View style={styles.body}>
         <Text weight="medium" style={styles.title}>
           Log In
@@ -50,7 +78,7 @@ export default function Login() {
           containerStyle={styles.textInput}
           label="Email Address"
           value={emailValue}
-          onChangeText={onChangeTextEmail}
+          onChangeText={setEmailValue}
           textContentType="emailAddress"
           autoCapitalize="none"
           autoFocus={true}
@@ -61,7 +89,7 @@ export default function Login() {
           containerStyle={styles.textInput}
           label="Password"
           value={passwordValue}
-          onChangeText={onChangeTextPassword}
+          onChangeText={setPasswordValue}
           textContentType="password"
           secureTextEntry={true}
         />
