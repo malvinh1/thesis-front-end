@@ -17,7 +17,7 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 const uploadLink = createUploadLink({
-  uri: 'our staging link',
+  uri: 'http://localhost:4000',
   credentials: 'same-origin',
 });
 const link = ApolloLink.from([authLink, uploadLink]);
