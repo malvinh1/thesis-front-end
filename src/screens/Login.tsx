@@ -7,29 +7,44 @@ import { useMutation } from '@apollo/react-hooks';
 import { FONT_SIZE } from '../constants/fonts';
 import { COLORS } from '../constants/colors';
 import { LOGIN_USER } from '../graphql/mutations/loginMutation';
-import { Login_login, LoginVariables } from '../generated/Login';
+import { LoginVariables, Login } from '../generated/Login';
 import { validateEmail, validatePassword } from '../helpers/validation';
+import asyncStorage from '../helpers/asyncStorage';
 
-export default function Login() {
+export default function LoginScene() {
   let { navigate } = useNavigation();
   let [emailValue, setEmailValue] = useState('');
   let [passwordValue, setPasswordValue] = useState('');
 
-  const [login, { loading: loadingLogin }] = useMutation<
-    Login_login,
-    LoginVariables
-  >(LOGIN_USER, {
-    onCompleted() {
-      navigate('Home');
+  const [login, { loading: loadingLogin }] = useMutation<Login, LoginVariables>(
+    LOGIN_USER,
+    {
+      onCompleted({ login }) {
+        if (login.token) {
+          asyncStorage.saveToken(login.token);
+          navigate('Home');
+        } else {
+          Alert.alert(
+            'Unexpected Error',
+            'Please try again',
+            [{ text: 'OK' }],
+            {
+              cancelable: false,
+            },
+          );
+        }
+      },
+      onError(error) {
+        let newError = error.message.split(':');
+        Alert.alert(newError[1]);
+      },
     },
-    onError(error) {
-      let newError = error.message.split(':');
-      Alert.alert(newError[1]);
-    },
-  });
+  );
 
   let onPressLogin = async () => {
+    // console.log('123');
     if (validateEmail(emailValue) && validatePassword(passwordValue)) {
+      // console.log('qwe');
       await login({
         variables: {
           email: emailValue,

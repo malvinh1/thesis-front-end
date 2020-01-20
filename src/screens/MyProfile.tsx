@@ -5,6 +5,7 @@ import { useNavigation } from 'naviflex';
 
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
+import asyncStorage from '../helpers/asyncStorage';
 
 export default function MyProfile() {
   let { navigate } = useNavigation();
@@ -74,7 +75,10 @@ export default function MyProfile() {
           <Text
             weight="medium"
             style={styles.fontMedium}
-            onPress={() => navigate('Welcome')}
+            onPress={async () => {
+              await asyncStorage.removeToken();
+              navigate('Welcome');
+            }}
           >
             Log Out
           </Text>
