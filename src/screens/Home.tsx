@@ -13,37 +13,57 @@ export default function Home() {
   return (
     <View style={styles.flex}>
       <View style={styles.navbar}>
-        <IconButton
-          icon="trending-up"
-          color={COLORS.primaryColor}
-          size={30}
-          onPress={() => navigate('Leaderboard')}
-        />
-        <IconButton
-          icon="account-circle"
-          color={COLORS.primaryColor}
-          size={30}
-          onPress={() => navigate('MyProfile')}
-        />
-      </View>
-      <View style={styles.body}>
-        <View style={styles.center}>
-          <Image source={src} style={styles.image} />
-        </View>
         <Text weight="medium" style={styles.title}>
-          Selamat Datang
+          Welcome
         </Text>
         <View style={styles.center}>
-          <Text>Selamat datang {'Kevin Lie'}, harap tekan tombol</Text>
-          <Text>dibawah untuk mulai mengerjakan ujian.</Text>
-          <Text>Semoga berhasil!</Text>
+          <Text style={styles.introText}>
+            Please press the button below to start playing
+          </Text>
+          <Text style={styles.introText}>and test yourself</Text>
         </View>
         <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buttonStyle}>
+            <IconButton
+              icon="play"
+              color={COLORS.primaryColor}
+              style={styles.iconPlay}
+            />
+            <Text weight="medium" style={styles.startQuiz}>
+              Start Quiz
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.body}>
+        <View style={[styles.center, { marginBottom: 50 }]}>
+          <Image source={src} style={styles.image} resizeMode="cover" />
+        </View>
+        <View style={styles.bottomContainer}>
           <TouchableOpacity
-            style={styles.playButton}
-            onPress={() => navigate('Home')} // TODO: Change to Quiz Route
+            style={styles.bottomMenu}
+            onPress={() => navigate('Home')}
           >
-            <IconButton icon="play" color={COLORS.white} size={35} />
+            <IconButton icon="home" color={COLORS.primaryColor} />
+            <Text style={[styles.menuText, { color: COLORS.primaryColor }]}>
+              Home
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.bottomMenu}
+            onPress={() => navigate('Shop')}
+          >
+            <IconButton icon="cart" color={COLORS.darkGrey} />
+            <Text style={styles.menuText}>Shop</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.bottomMenu}
+            onPress={() => navigate('MyProfile')}
+          >
+            <IconButton icon="account-circle" color={COLORS.darkGrey} />
+            <Text style={styles.menuText}>My Profile</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -59,43 +79,80 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navbar: {
-    flex: 1,
-    marginTop: 35,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  body: {
-    flex: 12,
-  },
-  image: {
-    width: 300,
-    height: 300,
+    flex: 3,
+    backgroundColor: COLORS.mint,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   title: {
     marginBottom: 16,
-    fontSize: FONT_SIZE.large,
-    color: COLORS.primaryColor,
-    textAlign: 'center',
+    fontSize: FONT_SIZE.xxLarge,
+    color: COLORS.white,
+  },
+  introText: {
+    opacity: 0.6,
+    color: COLORS.white,
   },
   buttonContainer: {
-    marginTop: 24,
-    alignItems: 'center',
+    position: 'absolute',
+    top: 255,
+    left: 135,
+    right: 0,
+    bottom: 0,
   },
-  playButton: {
-    width: 72,
-    height: 72,
-    borderRadius: 72 / 2,
-    backgroundColor: COLORS.primaryColor,
+  buttonStyle: {
+    paddingRight: 20,
+    borderRadius: 21,
+    width: 137,
+    height: 42,
+    backgroundColor: COLORS.white,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 4,
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  iconPlay: {
+    marginTop: 8,
+  },
+  startQuiz: {
+    color: COLORS.primaryColor,
+    fontSize: FONT_SIZE.medium,
+  },
+  body: {
+    flex: 5,
+    justifyContent: 'center',
+  },
+  image: {
+    width: '100%',
+    height: 300,
+  },
+  bottomContainer: {
+    paddingVertical: 12,
+    paddingHorizontal: 48,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.grey,
+  },
+  bottomMenu: {
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  menuText: {
+    marginTop: -10,
+    fontSize: FONT_SIZE.xxSmall,
   },
 });

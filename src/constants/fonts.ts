@@ -21,10 +21,11 @@ export const FONT_NAMES = {
 };
 
 export const FONT_SIZE = {
-  extraSmall: 12,
+  xxSmall: 10,
+  xSmall: 12,
   small: 14,
   medium: 16,
   large: 18,
   xLarge: 24,
-  xxLarge: 32,
+  xxLarge: 28,
 };
