@@ -1,17 +1,15 @@
-import Splash from './Splash';
-import Welcome from './Welcome';
-import Login from './Login';
-import Register from './Register';
-import Home from './Home';
-import Leaderboard from './Leaderboard';
-import MyProfile from './MyProfile';
+import About from './About';
 import AvatarCollection from './AvatarCollection';
 import BadgeCollection from './BadgeCollection';
-import About from './About';
+import Home from './Home';
+import Leaderboard from './Leaderboard';
+import Login from './Login';
+import MyProfile from './MyProfile';
+import Register from './Register';
 import Shop from './Shop';
+import Welcome from './Welcome';
 
 export {
-  Splash,
   Welcome,
   Login,
   Register,
