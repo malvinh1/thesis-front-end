@@ -1,45 +1,25 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import React, { useEffect } from 'react';
-import {
-  View,
-  StyleSheet,
-  SafeAreaView,
-  StyleProp,
-  ViewStyle,
-  Image,
-} from 'react-native';
+import React from 'react';
+import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { Text, Button } from 'exoflex';
 import { useNavigation } from 'naviflex';
 
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
-import { useDimensions } from '../helpers/useDimensions';
 import asyncStorage from '../helpers/asyncStorage';
 
 export default function Welcome() {
   let { navigate } = useNavigation();
-  let widthScreen = useDimensions();
+
   let src = require('../../assets/images/welcomeAsset.png');
 
-  let buttonDefaultStyle = {
-    minWidth: 120,
-    width: widthScreen.width - 48,
-    borderRadius: 8,
-    backgroundColor: COLORS.primaryColor,
-    justifyContent: 'center',
-    alignItems: 'center',
-  } as StyleProp<ViewStyle>;
-
   let timeOut = async () => {
-    if (await asyncStorage.getToken()) {
+    let token = await asyncStorage.getToken();
+    if (token) {
       navigate('Home');
-    } else {
-      navigate('Welcome');
+      return;
     }
   };
-
-  useEffect(() => {});
-
   timeOut();
 
   return (
@@ -54,7 +34,7 @@ export default function Welcome() {
 
       <View style={styles.bottomContainer}>
         <Button
-          contentStyle={buttonDefaultStyle}
+          style={styles.buttonDefaultStyle}
           onPress={() => navigate('Login')}
         >
           <Text weight="bold" style={styles.buttonText}>
@@ -63,7 +43,7 @@ export default function Welcome() {
         </Button>
         <View style={styles.buttonSeparator} />
         <Button
-          contentStyle={buttonDefaultStyle}
+          style={styles.buttonDefaultStyle}
           onPress={() => navigate('Register')}
         >
           <Text weight="bold" style={styles.buttonText}>
@@ -78,17 +58,21 @@ export default function Welcome() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   body: {
     flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
+  buttonDefaultStyle: {
+    backgroundColor: COLORS.primaryColor,
+    borderRadius: 8,
+    marginHorizontal: 24,
+    minWidth: 120,
+  },
   title: {
     marginBottom: 120,
-    fontSize: FONT_SIZE.xLarge,
+    fontSize: FONT_SIZE.xxLarge,
     color: COLORS.primaryColor,
   },
   imageWelcome: {
