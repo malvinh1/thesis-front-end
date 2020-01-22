@@ -31,10 +31,11 @@ export default function MyProfile() {
             </Text>
           </View>
         </View>
-        <View style={styles.avatar}>
+        <View style={styles.avatarContainer}>
           <Avatar.Image
             source={require(`../../assets/images/${avatar}`)}
             size={120}
+            style={styles.avatar}
           ></Avatar.Image>
         </View>
         <View style={{ alignItems: 'center' }}>
@@ -88,6 +89,9 @@ const styles = StyleSheet.create({
     height: 20,
   },
   avatar: {
+    backgroundColor: '#105d53',
+  },
+  avatarContainer: {
     marginVertical: 18,
     alignItems: 'center',
   },
