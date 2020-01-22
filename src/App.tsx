@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { BuiltInFonts, Provider } from 'exoflex';
+import { Provider } from 'exoflex';
 import * as Font from 'expo-font';
 import { ApolloProvider } from '@apollo/react-hooks';
 
@@ -13,9 +13,7 @@ export default function App() {
   let [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
-    Font.loadAsync({ ...BuiltInFonts, ...CustomFonts }).then(() =>
-      setFontsLoaded(true),
-    );
+    Font.loadAsync({ ...CustomFonts }).then(() => setFontsLoaded(true));
   }, []);
 
   return fontsLoaded ? (
