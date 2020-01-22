@@ -8,6 +8,7 @@ import MyProfile from './MyProfile';
 import AvatarCollection from './AvatarCollection';
 import BadgeCollection from './BadgeCollection';
 import About from './About';
+import Shop from './Shop';
 
 export {
   Splash,
@@ -15,6 +16,7 @@ export {
   Login,
   Register,
   Home,
+  Shop,
   Leaderboard,
   MyProfile,
   AvatarCollection,

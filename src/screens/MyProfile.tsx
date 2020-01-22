@@ -1,87 +1,81 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, IconButton, Avatar } from 'exoflex';
-import { useNavigation } from 'naviflex';
+import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text, Avatar } from 'exoflex';
 
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
 import asyncStorage from '../helpers/asyncStorage';
+import { useNavigation } from 'naviflex';
+
+let avatar = 'detective.png';
 
 export default function MyProfile() {
   let { navigate } = useNavigation();
-  let avatarSrc = require('../../assets/images/home.png');
+
+  const onLogout = async () => {
+    await asyncStorage.removeToken();
+    navigate('Welcome');
+  };
 
   return (
-    <View style={styles.flex}>
-      <View style={styles.navbar}>
-        <IconButton
-          icon="arrow-left"
-          color={COLORS.primaryColor}
-          style={styles.backIcon}
-          onPress={() => navigate('Home')}
-        />
-        <Text weight="medium" style={styles.title}>
-          Profil Saya
-        </Text>
-        <Text weight="medium" style={styles.point}>
-          {'1000 pts'}
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.userInfoContainer}>
+        <View style={styles.userInfo}>
+          <Text style={styles.topFont} weight="medium">
+            Score: 1283
+          </Text>
+          <View style={styles.points}>
+            <View style={styles.yellowCoin} />
+            <Text style={styles.topFont} weight="medium">
+              1283
+            </Text>
+          </View>
+        </View>
+        <View style={styles.avatar}>
+          <Avatar.Image
+            source={require(`../../assets/images/${avatar}`)}
+            size={120}
+          ></Avatar.Image>
+        </View>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={styles.name} weight="medium">
+            Jerry Thomson
+          </Text>
+          <Text style={styles.email}>jerry.thomson@gmail.com</Text>
+        </View>
       </View>
-      <View style={styles.profileInfoContainer}>
-        <Avatar.Image source={avatarSrc} />
-        <View>
-          <Text weight="medium" style={styles.fontMedium}>
-            {'Kevin Lie'}
-          </Text>
-          <Text style={styles.dateRegister}>{'Registered on 15/01/2020'}</Text>
+      <View style={styles.contentContainer}>
+        <View style={styles.content}>
+          <View style={styles.menuTextContainer}>
+            <Image
+              source={require('../../assets/images/badge.png')}
+              style={styles.badge}
+            />
+            <Text style={styles.menuText} weight="medium">
+              View My Badge
+            </Text>
+          </View>
+
+          <View style={styles.menuTextContainer}>
+            <Image
+              source={require('../../assets/images/leaderboard.png')}
+              style={styles.asset}
+            />
+            <Text style={styles.menuText} weight="medium">
+              Leaderboard
+            </Text>
+          </View>
         </View>
-        <IconButton icon="pencil" color={COLORS.primaryColor} />
-      </View>
-      <View style={styles.body}>
-        <View style={styles.menuContainer}>
-          <IconButton
-            icon="star-circle"
-            color={COLORS.primaryColor}
-            style={styles.menuIcon}
-          />
-          <Text
-            weight="medium"
-            style={styles.fontMedium}
-            onPress={() => navigate('Home')}
-          >
-            Koleksi Badge
-          </Text>
-        </View>
-        <View style={styles.menuContainer}>
-          <IconButton
-            icon="information-outline"
-            color={COLORS.primaryColor}
-            style={styles.menuIcon}
-          />
-          <Text
-            weight="medium"
-            style={styles.fontMedium}
-            onPress={() => navigate('Home')}
-          >
-            About
-          </Text>
-        </View>
-        <View style={styles.menuContainer}>
-          <IconButton
-            icon="power"
-            color={COLORS.primaryColor}
-            style={styles.menuIcon}
-          />
-          <Text
-            weight="medium"
-            style={styles.fontMedium}
-            onPress={async () => {
-              await asyncStorage.removeToken();
-              navigate('Welcome');
-            }}
-          >
-            Log Out
-          </Text>
+        <View style={styles.logOutMenu}>
+          <TouchableOpacity style={styles.menuTextContainer} onPress={onLogout}>
+            <Image
+              source={require('../../assets/images/logout.png')}
+              style={styles.asset}
+            />
+            <Text style={styles.menuText} weight="medium">
+              Log Out
+            </Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
@@ -89,56 +83,74 @@ export default function MyProfile() {
 }
 
 const styles = StyleSheet.create({
-  flex: {
+  asset: {
+    width: 20,
+    height: 20,
+  },
+  avatar: {
+    marginVertical: 18,
+    alignItems: 'center',
+  },
+  badge: {
+    height: 24,
+    width: 22,
+  },
+  container: {
     flex: 1,
   },
-  navbar: {
-    marginTop: 25,
-    paddingLeft: 8,
-    paddingRight: 24,
-    borderBottomWidth: 1,
+  content: {
+    marginTop: 28,
     borderBottomColor: COLORS.grey,
+    borderBottomWidth: 3,
+  },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: COLORS.white,
+  },
+  email: {
+    color: COLORS.white,
+    opacity: 0.8,
+  },
+  logOutMenu: {
+    marginTop: 26,
+  },
+  menuText: {
+    color: COLORS.black,
+    fontSize: FONT_SIZE.medium,
+    marginBottom: 31,
+    marginLeft: 18,
+  },
+  menuTextContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    marginLeft: 24,
   },
-  backIcon: {
-    marginTop: 12,
-  },
-  title: {
-    marginLeft: 30,
+  name: {
+    color: COLORS.white,
     fontSize: FONT_SIZE.large,
+    marginBottom: 8,
   },
-  point: {
-    color: COLORS.primaryColor,
-    fontSize: FONT_SIZE.medium,
+  points: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
-  profileInfoContainer: {
-    paddingVertical: 16,
-    paddingLeft: 24,
-    paddingRight: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS.grey,
+  topFont: {
+    color: COLORS.white,
+  },
+  userInfo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    marginTop: 40,
+    marginHorizontal: 24,
   },
-  fontMedium: {
-    fontSize: FONT_SIZE.medium,
+  userInfoContainer: {
+    backgroundColor: COLORS.primaryColor,
+    height: 281,
   },
-  dateRegister: {
-    opacity: 0.6,
-  },
-  body: {
-    flex: 5,
-    marginTop: 16,
-  },
-  menuContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  menuIcon: {
-    paddingTop: 3,
-    marginLeft: 8,
+  yellowCoin: {
+    width: 10,
+    height: 10,
+    backgroundColor: COLORS.marigold,
+    borderRadius: 5,
+    marginRight: 8,
   },
 });

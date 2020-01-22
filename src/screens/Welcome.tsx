@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-var-requires */
+import React, { useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -13,6 +14,7 @@ import { useNavigation } from 'naviflex';
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
 import { useDimensions } from '../helpers/useDimensions';
+import asyncStorage from '../helpers/asyncStorage';
 
 export default function Welcome() {
   let { navigate } = useNavigation();
@@ -28,11 +30,23 @@ export default function Welcome() {
     alignItems: 'center',
   } as StyleProp<ViewStyle>;
 
+  let timeOut = async () => {
+    if (await asyncStorage.getToken()) {
+      navigate('Home');
+    } else {
+      navigate('Welcome');
+    }
+  };
+
+  useEffect(() => {});
+
+  timeOut();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.body}>
         <Text weight="bold" style={styles.title}>
-          NAME
+          Welcome to MediQuiz
         </Text>
 
         <Image source={src} style={styles.imageWelcome} />
@@ -75,6 +89,7 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 120,
     fontSize: FONT_SIZE.xLarge,
+    color: COLORS.primaryColor,
   },
   imageWelcome: {
     aspectRatio: 1,
