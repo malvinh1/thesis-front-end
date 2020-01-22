@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import React, { useState } from 'react';
 import { View, StyleSheet, Alert } from 'react-native';
 import { Text, TextInput, Button, ActivityIndicator, Modal } from 'exoflex';
@@ -137,25 +138,13 @@ export default function Register() {
 }
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
-  navbar: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  title: {
-    marginBottom: 36,
-    fontSize: FONT_SIZE.large,
-    textAlign: 'center',
-  },
   body: {
     flex: 5,
     marginTop: 50,
     paddingHorizontal: 16,
   },
-  textInput: {
-    marginBottom: 24,
+  bottomText: {
+    color: COLORS.darkWhite,
   },
   bottomContainer: {
     marginBottom: 30,
@@ -166,9 +155,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  bottomText: {
-    color: COLORS.darkWhite,
-  },
   buttonStyle: {
     marginHorizontal: 24,
     borderRadius: 8,
@@ -178,8 +164,19 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: FONT_SIZE.medium,
   },
+  flex: {
+    flex: 1,
+  },
   loginText: {
     fontSize: FONT_SIZE.medium,
     color: COLORS.primaryColor,
+  },
+  title: {
+    marginBottom: 36,
+    fontSize: FONT_SIZE.large,
+    textAlign: 'center',
+  },
+  textInput: {
+    marginBottom: 24,
   },
 });

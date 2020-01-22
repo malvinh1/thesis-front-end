@@ -1,20 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { Text, IconButton } from 'exoflex';
-import { useNavigation } from 'naviflex';
 
 import { FONT_SIZE } from '../constants/fonts';
 import { COLORS } from '../constants/colors';
 
 export default function Home() {
-  let { navigate } = useNavigation();
-  let src = require('../../assets/images/home.png');
-
   return (
     <View style={styles.flex}>
       <View style={styles.navbar}>
         <Text weight="medium" style={styles.title}>
-          Welcome
+          MediQuiz
         </Text>
         <View style={styles.center}>
           <Text style={styles.introText}>
@@ -36,35 +32,12 @@ export default function Home() {
         </View>
       </View>
       <View style={styles.body}>
-        <View style={[styles.center, { marginBottom: 50 }]}>
-          <Image source={src} style={styles.image} resizeMode="cover" />
-        </View>
-        <View style={styles.bottomContainer}>
-          <TouchableOpacity
-            style={styles.bottomMenu}
-            onPress={() => navigate('Home')}
-          >
-            <IconButton icon="home" color={COLORS.primaryColor} />
-            <Text style={[styles.menuText, { color: COLORS.primaryColor }]}>
-              Home
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.bottomMenu}
-            onPress={() => navigate('Shop')}
-          >
-            <IconButton icon="cart" color={COLORS.darkGrey} />
-            <Text style={styles.menuText}>Shop</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.bottomMenu}
-            onPress={() => navigate('MyProfile')}
-          >
-            <IconButton icon="account-circle" color={COLORS.darkGrey} />
-            <Text style={styles.menuText}>My Profile</Text>
-          </TouchableOpacity>
+        <View style={[styles.center, styles.marginBottom]}>
+          <Image
+            source={require('../../assets/images/home.png')}
+            style={styles.image}
+            resizeMode="contain"
+          />
         </View>
       </View>
     </View>
@@ -79,7 +52,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   navbar: {
-    flex: 3,
+    height: 231,
     backgroundColor: COLORS.mint,
     alignItems: 'center',
     justifyContent: 'center',
@@ -95,7 +68,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     position: 'absolute',
-    top: 255,
+    top: 210,
     left: 135,
     right: 0,
     bottom: 0,
@@ -133,26 +106,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 300,
   },
-  bottomContainer: {
-    paddingVertical: 12,
-    paddingHorizontal: 48,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderTopWidth: 1,
-    borderTopColor: COLORS.grey,
-  },
-  bottomMenu: {
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  menuText: {
-    marginTop: -10,
-    fontSize: FONT_SIZE.xxSmall,
+  marginBottom: {
+    marginBottom: 50,
   },
 });

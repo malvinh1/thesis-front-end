@@ -1,16 +1,95 @@
-import { createAppContainer } from 'react-navigation';
+import React from 'react';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
+import { View } from 'react-native';
+import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
-import { routes, initialRoute } from './routes';
+import { Home, Shop, MyProfile, Login, Register, Welcome } from '../screens';
+import { COLORS } from '../constants/colors';
 
-const StackNavigator = createStackNavigator(
-  { ...routes },
+import Icon from 'react-native-vector-icons/Ionicons';
+
+const AuthStack = createStackNavigator({
+  Login: {
+    screen: Login,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+  Register: {
+    screen: Register,
+    navigationOptions: {
+      headerShown: false,
+    },
+  },
+});
+
+const AppStack = createMaterialBottomTabNavigator(
   {
-    initialRouteName: initialRoute,
-    headerMode: 'none',
+    Home: {
+      screen: Home,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => {
+          return (
+            <View>
+              <Icon style={{ color: tintColor }} size={25} name={'ios-home'} />
+            </View>
+          );
+        },
+      },
+    },
+    Shop: {
+      screen: Shop,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => {
+          return (
+            <View>
+              <Icon style={{ color: tintColor }} size={25} name={'ios-cart'} />
+            </View>
+          );
+        },
+      },
+    },
+    Profile: {
+      screen: MyProfile,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => {
+          return (
+            <View>
+              <Icon
+                style={{ color: tintColor }}
+                size={25}
+                name={'ios-person'}
+              />
+            </View>
+          );
+        },
+      },
+    },
+  },
+  {
+    initialRouteName: 'Home',
+    activeColor: COLORS.primaryColor,
+    inactiveColor: COLORS.darkGrey,
+    barStyle: {
+      backgroundColor: COLORS.white,
+      borderTopWidth: 3,
+      borderTopColor: COLORS.grey,
+    },
   },
 );
 
-const NativeRouter = createAppContainer(StackNavigator);
+const AppNavigator = createSwitchNavigator(
+  {
+    Auth: AuthStack,
+    App: AppStack,
+    Welcome: Welcome,
+  },
+  {
+    initialRouteName: 'Welcome',
+  },
+);
+
+const NativeRouter = createAppContainer(AppNavigator);
 
 export default NativeRouter;

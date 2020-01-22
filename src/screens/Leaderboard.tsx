@@ -22,7 +22,7 @@ export default function Leaderboard() {
         </Text>
         <View />
       </View>
-      <View style={styles.body}></View>
+      <View style={styles.body} />
     </View>
   );
 }
