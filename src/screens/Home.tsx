@@ -45,31 +45,15 @@ export default function Home() {
 }
 
 const styles = StyleSheet.create({
-  flex: {
-    flex: 1,
-  },
-  center: {
-    alignItems: 'center',
-  },
-  navbar: {
-    height: 231,
-    backgroundColor: COLORS.mint,
-    alignItems: 'center',
+  body: {
+    flex: 5,
     justifyContent: 'center',
   },
-  title: {
-    marginBottom: 16,
-    fontSize: FONT_SIZE.xxLarge,
-    color: COLORS.white,
-  },
-  introText: {
-    opacity: 0.6,
-    color: COLORS.white,
-  },
   buttonContainer: {
+    alignItems: 'center',
     position: 'absolute',
     top: 210,
-    left: 135,
+    left: 0,
     right: 0,
     bottom: 0,
   },
@@ -91,22 +75,39 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  center: {
+    alignItems: 'center',
+  },
+  flex: {
+    flex: 1,
+  },
   iconPlay: {
     marginTop: 8,
-  },
-  startQuiz: {
-    color: COLORS.primaryColor,
-    fontSize: FONT_SIZE.medium,
-  },
-  body: {
-    flex: 5,
-    justifyContent: 'center',
   },
   image: {
     width: '100%',
     height: 300,
   },
+  introText: {
+    opacity: 0.6,
+    color: COLORS.white,
+  },
   marginBottom: {
     marginBottom: 50,
+  },
+  navbar: {
+    height: 231,
+    backgroundColor: COLORS.mint,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  title: {
+    marginBottom: 16,
+    fontSize: FONT_SIZE.xxLarge,
+    color: COLORS.white,
+  },
+  startQuiz: {
+    color: COLORS.primaryColor,
+    fontSize: FONT_SIZE.medium,
   },
 });
