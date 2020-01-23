@@ -42,9 +42,7 @@ export default function LoginScene() {
   );
 
   let onPressLogin = async () => {
-    // console.log('123');
     if (validateEmail(emailValue) && validatePassword(passwordValue)) {
-      // console.log('qwe');
       await login({
         variables: {
           email: emailValue,
@@ -75,10 +73,7 @@ export default function LoginScene() {
   return (
     <View style={styles.flex}>
       <Modal
-        contentContainerStyle={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        contentContainerStyle={styles.modalContainer}
         animationType="fade"
         visible={loadingLogin}
       >
@@ -167,6 +162,10 @@ const styles = StyleSheet.create({
   buttonText: {
     color: COLORS.white,
     fontSize: FONT_SIZE.medium,
+  },
+  modalContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   registerText: {
     color: COLORS.primaryColor,

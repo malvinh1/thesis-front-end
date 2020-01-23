@@ -1,53 +1,70 @@
 import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Text, Avatar } from 'exoflex';
+import { useQuery } from '@apollo/react-hooks';
+import { Text, Avatar, ActivityIndicator } from 'exoflex';
 
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
+import { MY_PROFILE } from '../graphql/queries/myProfileQuery';
 import asyncStorage from '../helpers/asyncStorage';
 import { useNavigation } from 'naviflex';
-
-let avatar = 'detective.png';
+import { myProfile } from '../generated/myProfile';
+import { avatars } from '../constants/avatars';
 
 export default function MyProfile() {
   let { navigate } = useNavigation();
+
+  let { loading, data } = useQuery<myProfile>(MY_PROFILE);
 
   const onLogout = async () => {
     await asyncStorage.removeToken();
     navigate('Welcome');
   };
 
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={COLORS.primaryColor} />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
         <View style={styles.userInfo}>
           <Text style={styles.topFont} weight="medium">
-            Score: 1283
+            Score: {data?.myProfile.highestScore ?? 0}
           </Text>
           <View style={styles.points}>
             <View style={styles.yellowCoin} />
             <Text style={styles.topFont} weight="medium">
-              1283
+              {data?.myProfile.point ?? 0}
             </Text>
           </View>
         </View>
         <View style={styles.avatarContainer}>
           <Avatar.Image
-            source={require(`../../assets/images/${avatar}`)}
+            source={avatars[Number(data?.myProfile.avatar?.image) ?? 0].default}
             size={120}
             style={styles.avatar}
           ></Avatar.Image>
         </View>
         <View style={{ alignItems: 'center' }}>
           <Text style={styles.name} weight="medium">
-            Jerry Thomson
+            {data?.myProfile.name ?? 'name'}
           </Text>
-          <Text style={styles.email}>jerry.thomson@gmail.com</Text>
+          <Text style={styles.email}>{data?.myProfile.email ?? 'email'}</Text>
         </View>
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.content}>
-          <View style={styles.menuTextContainer}>
+          <TouchableOpacity
+            style={styles.menuTextContainer}
+            onPress={() => {
+              navigate('Badge');
+            }}
+          >
             <Image
               source={require('../../assets/images/badge.png')}
               style={styles.badge}
@@ -55,9 +72,14 @@ export default function MyProfile() {
             <Text style={styles.menuText} weight="medium">
               View My Badge
             </Text>
-          </View>
+          </TouchableOpacity>
 
-          <View style={styles.menuTextContainer}>
+          <TouchableOpacity
+            style={styles.menuTextContainer}
+            onPress={() => {
+              navigate('Leaderboard');
+            }}
+          >
             <Image
               source={require('../../assets/images/leaderboard.png')}
               style={styles.asset}
@@ -65,7 +87,7 @@ export default function MyProfile() {
             <Text style={styles.menuText} weight="medium">
               Leaderboard
             </Text>
-          </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.logOutMenu}>
           <TouchableOpacity style={styles.menuTextContainer} onPress={onLogout}>
@@ -114,6 +136,11 @@ const styles = StyleSheet.create({
   email: {
     color: COLORS.white,
     opacity: 0.8,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   logOutMenu: {
     marginTop: 26,
