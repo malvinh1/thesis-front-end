@@ -4,7 +4,17 @@ import { createStackNavigator } from 'react-navigation-stack';
 import { View } from 'react-native';
 import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
 
-import { Home, Shop, MyProfile, Login, Register, Welcome } from '../screens';
+import {
+  Home,
+  Shop,
+  MyProfile,
+  Login,
+  Register,
+  Welcome,
+  Leaderboard,
+  About,
+  BadgeCollection,
+} from '../screens';
 import { COLORS } from '../constants/colors';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -66,6 +76,22 @@ const AppStack = createMaterialBottomTabNavigator(
         },
       },
     },
+    About: {
+      screen: About,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => {
+          return (
+            <View>
+              <Icon
+                style={{ color: tintColor }}
+                size={25}
+                name={'ios-information-circle-outline'}
+              />
+            </View>
+          );
+        },
+      },
+    },
   },
   {
     initialRouteName: 'Home',
@@ -84,6 +110,8 @@ const AppNavigator = createSwitchNavigator(
     Auth: AuthStack,
     App: AppStack,
     Welcome: Welcome,
+    Leaderboard: Leaderboard,
+    Badge: BadgeCollection,
   },
   {
     initialRouteName: 'Welcome',
