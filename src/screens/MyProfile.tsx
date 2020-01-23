@@ -1,20 +1,21 @@
 import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
-import { Text, Avatar, ActivityIndicator } from 'exoflex';
+import { Text, Avatar } from 'exoflex';
 
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
-import { MY_PROFILE } from '../graphql/queries/myProfileQuery';
+import { GET_PROFILE_DATA } from '../graphql/queries/myProfileQuery';
 import asyncStorage from '../helpers/asyncStorage';
 import { useNavigation } from 'naviflex';
 import { myProfile } from '../generated/myProfile';
 import { avatars } from '../constants/avatars';
+import { Loading } from '../components';
 
 export default function MyProfile() {
   let { navigate } = useNavigation();
 
-  let { loading, data } = useQuery<myProfile>(MY_PROFILE);
+  let { loading, data } = useQuery<myProfile>(GET_PROFILE_DATA);
 
   const onLogout = async () => {
     await asyncStorage.removeToken();
@@ -22,11 +23,7 @@ export default function MyProfile() {
   };
 
   if (loading) {
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={COLORS.primaryColor} />
-      </View>
-    );
+    return <Loading />;
   }
 
   return (
@@ -45,7 +42,7 @@ export default function MyProfile() {
         </View>
         <View style={styles.avatarContainer}>
           <Avatar.Image
-            source={avatars[Number(data?.myProfile.avatar?.image) ?? 0].default}
+            source={avatars[Number(data?.myProfile.avatar?.image ?? 0)].image}
             size={120}
             style={styles.avatar}
           ></Avatar.Image>
@@ -136,11 +133,6 @@ const styles = StyleSheet.create({
   email: {
     color: COLORS.white,
     opacity: 0.8,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   logOutMenu: {
     marginTop: 26,

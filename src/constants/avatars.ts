@@ -1,5 +1,5 @@
 export const avatars = [
   {
-    default: require('../../assets/images/detective.png'),
+    image: require('../../assets/images/detective.png'),
   },
 ];

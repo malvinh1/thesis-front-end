@@ -3,11 +3,22 @@ import { View, StyleSheet } from 'react-native';
 import { Text, IconButton, Avatar } from 'exoflex';
 import { useNavigation } from 'naviflex';
 
+import { Loading } from '../components';
+import { avatars } from '../constants/avatars';
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_LEADERBOARD } from '../graphql/queries/leaderboardQuery';
+import { leaderboard } from '../generated/leaderboard';
 
 export default function Leaderboard() {
   let { navigate } = useNavigation();
+
+  let { loading, data } = useQuery<leaderboard>(GET_LEADERBOARD);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <View style={styles.flex}>
@@ -22,20 +33,24 @@ export default function Leaderboard() {
         </Text>
         <View />
       </View>
-      <View style={styles.contentContainer}>
-        <Avatar.Image
-          style={styles.avatar}
-          source={require('../../assets/images/avatar.png')}
-        />
-        <View style={styles.marginLeft}>
-          <Text style={styles.avatarName} weight="medium">
-            #1 Jerry Thomson
-          </Text>
-          <Text style={styles.score} weight="medium">
-            Score: 1283
-          </Text>
-        </View>
-      </View>
+      {data?.leaderboard.map((element, index) => {
+        return (
+          <View style={styles.contentContainer} key={index}>
+            <Avatar.Image
+              style={styles.avatar}
+              source={avatars[Number(element.avatar?.image ?? 0)].image}
+            />
+            <View style={styles.marginLeft}>
+              <Text style={styles.avatarName} weight="medium">
+                #{index + 1} {element.name}
+              </Text>
+              <Text style={styles.score} weight="medium">
+                Score: {element.highestScore}
+              </Text>
+            </View>
+          </View>
+        );
+      })}
     </View>
   );
 }
@@ -60,6 +75,7 @@ const styles = StyleSheet.create({
     height: 96,
     alignItems: 'center',
     marginHorizontal: 24,
+    marginVertical: 16,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

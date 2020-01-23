@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const MY_PROFILE = gql`
+export const GET_PROFILE_DATA = gql`
   query myProfile {
     myProfile {
       id
