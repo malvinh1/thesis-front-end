@@ -1,11 +1,24 @@
 import gql from 'graphql-tag';
 
-export const GET_PROFILE_DATA = gql`
-  query myProfile {
-    myProfile {
+export const UPDATE_PROFILE = gql`
+  mutation UpdateProfile(
+    $name: String
+    $email: String
+    $password: String
+    $avatarId: ID
+    $highestScore: Int
+    $point: Int
+  ) {
+    updateProfile(
+      name: $name
+      email: $email
+      password: $password
+      avatarId: $avatarId
+      highestScore: $highestScore
+      point: $point
+    ) {
       id
       email
-      password
       name
       avatar {
         id
@@ -32,7 +45,6 @@ export const GET_PROFILE_DATA = gql`
         NoseBleed
         Cramps
       }
-      createdAt
     }
   }
 `;

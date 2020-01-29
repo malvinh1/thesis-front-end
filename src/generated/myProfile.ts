@@ -26,6 +26,17 @@ export interface myProfile_myProfile_badge {
   name: string;
 }
 
+export interface myProfile_myProfile_progress {
+  __typename: "Progress";
+  id: string;
+  CPR: number;
+  Burns: number;
+  Bruised: number;
+  OpenWound: number;
+  NoseBleed: number;
+  Cramps: number;
+}
+
 export interface myProfile_myProfile {
   __typename: "User";
   id: string;
@@ -37,6 +48,7 @@ export interface myProfile_myProfile {
   badge: myProfile_myProfile_badge[] | null;
   highestScore: number;
   point: number;
+  progress: myProfile_myProfile_progress;
   createdAt: any;
 }
 

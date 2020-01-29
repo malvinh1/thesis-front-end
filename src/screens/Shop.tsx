@@ -113,8 +113,8 @@ const styles = StyleSheet.create({
   navbar: {
     height: 231,
     backgroundColor: COLORS.mint,
+    paddingTop: 75,
     alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
     marginBottom: 16,

@@ -38,7 +38,6 @@ export default function Register() {
           name: nameValue,
           email: emailValue,
           password: passwordValue,
-          avatarId: 'ck5hswuojxdwt0b00qftbbjiu',
         },
       });
     } else if (!validateEmail(emailValue)) {

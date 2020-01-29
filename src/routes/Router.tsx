@@ -14,6 +14,9 @@ import {
   Leaderboard,
   About,
   BadgeCollection,
+  ChooseCategory,
+  SelectLevel,
+  Quiz,
 } from '../screens';
 import { COLORS } from '../constants/colors';
 
@@ -109,9 +112,12 @@ const AppNavigator = createSwitchNavigator(
   {
     Auth: AuthStack,
     App: AppStack,
-    Welcome: Welcome,
-    Leaderboard: Leaderboard,
     Badge: BadgeCollection,
+    ChooseCategory: ChooseCategory,
+    Leaderboard: Leaderboard,
+    SelectLevel: SelectLevel,
+    Quiz: Quiz,
+    Welcome: Welcome,
   },
   {
     initialRouteName: 'Welcome',

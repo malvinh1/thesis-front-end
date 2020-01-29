@@ -4,22 +4,27 @@ import { Text, IconButton } from 'exoflex';
 
 import { FONT_SIZE } from '../constants/fonts';
 import { COLORS } from '../constants/colors';
+import { useNavigation } from 'naviflex';
 
 export default function Home() {
+  let { navigate } = useNavigation();
   return (
     <View style={styles.flex}>
       <View style={styles.navbar}>
-        <Text weight="medium" style={styles.title}>
-          MediQuiz
-        </Text>
         <View style={styles.center}>
-          <Text style={styles.introText}>
-            Please press the button below to start playing
+          <Text weight="medium" style={styles.title}>
+            MediQuiz
           </Text>
-          <Text style={styles.introText}>and test yourself</Text>
+          <Text style={styles.introText}>
+            Please press the button below to start playing {'\n'}and test
+            yourself
+          </Text>
         </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.buttonStyle}>
+        <TouchableOpacity
+          style={styles.buttonContainer}
+          onPress={() => navigate('ChooseCategory')}
+        >
+          <View style={styles.buttonStyle}>
             <IconButton
               icon="play"
               color={COLORS.primaryColor}
@@ -28,8 +33,8 @@ export default function Home() {
             <Text weight="medium" style={styles.startQuiz}>
               Start Quiz
             </Text>
-          </TouchableOpacity>
-        </View>
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.body}>
         <View style={[styles.center, styles.marginBottom]}>
@@ -76,6 +81,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   center: {
+    justifyContent: 'center',
     alignItems: 'center',
   },
   flex: {
@@ -89,22 +95,22 @@ const styles = StyleSheet.create({
     height: 300,
   },
   introText: {
-    opacity: 0.6,
     color: COLORS.white,
+    opacity: 0.6,
+    textAlign: 'center',
   },
   marginBottom: {
     marginBottom: 50,
   },
   navbar: {
-    height: 231,
+    height: 265,
     backgroundColor: COLORS.mint,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   title: {
-    marginBottom: 16,
-    fontSize: FONT_SIZE.xxLarge,
     color: COLORS.white,
+    fontSize: FONT_SIZE.xxLarge,
+    marginTop: 75,
+    marginBottom: 16,
   },
   startQuiz: {
     color: COLORS.primaryColor,
