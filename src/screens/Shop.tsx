@@ -1,21 +1,90 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import { useQuery } from '@apollo/react-hooks';
-import { Text, Avatar } from 'exoflex';
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  FlatList,
+  Alert,
+} from 'react-native';
+import { useQuery, useMutation } from '@apollo/react-hooks';
+import { Text, Avatar, IconButton, ActivityIndicator } from 'exoflex';
+
+import { Loading } from '../components';
 
 import { FONT_SIZE } from '../constants/fonts';
 import { COLORS } from '../constants/colors';
 import { avatars } from '../constants/avatars';
 
 import { GET_AVATARS } from '../graphql/queries/avatarsQuery';
+import { GET_PROFILE_DATA } from '../graphql/queries/myProfileQuery';
+import { ADD_TO_AVATAR_COLLECTION } from '../graphql/mutations/addToAvatarCollectionMutation';
+import { UPDATE_PROFILE } from '../graphql/mutations/updateProfileMutation';
 
 import { Avatars } from '../generated/Avatars';
-import { Loading } from '../components';
+import { myProfile } from '../generated/myProfile';
+import {
+  AddToAvatarCollection,
+  AddToAvatarCollectionVariables,
+} from '../generated/AddToAvatarCollection';
+import {
+  UpdateProfile,
+  UpdateProfileVariables,
+} from '../generated/UpdateProfile';
 
 export default function Home() {
-  const { loading, data } = useQuery<Avatars>(GET_AVATARS);
+  const { loading: loadingAvatars, data: avatarsData } = useQuery<Avatars>(
+    GET_AVATARS,
+  );
 
-  if (loading) {
+  const { loading: loadingProfile, data: profileData } = useQuery<myProfile>(
+    GET_PROFILE_DATA,
+  );
+
+  const [
+    addToAvatarCollection,
+    { loading: loadingAddToAvatarCollection },
+  ] = useMutation<AddToAvatarCollection, AddToAvatarCollectionVariables>(
+    ADD_TO_AVATAR_COLLECTION,
+  );
+
+  const [updateProfile, { loading: loadingUpdateProfile }] = useMutation<
+    UpdateProfile,
+    UpdateProfileVariables
+  >(UPDATE_PROFILE);
+
+  const onBuyAvatar = async (avatarId: string, price: number) => {
+    if (profileData?.myProfile.point && profileData.myProfile.point >= price) {
+      await addToAvatarCollection({
+        variables: {
+          avatarId,
+        },
+      });
+      await updateProfile({
+        variables: {
+          point: profileData.myProfile.point - price,
+        },
+      });
+    } else {
+      Alert.alert(
+        'Coins is not enough',
+        'Play the quiz to earn more coins',
+        [{ text: 'OK' }],
+        {
+          cancelable: false,
+        },
+      );
+    }
+  };
+
+  const onEquipAvatar = async (avatarId: string) => {
+    await updateProfile({
+      variables: {
+        avatarId,
+      },
+    });
+  };
+
+  if (loadingAvatars || loadingProfile) {
     return <Loading />;
   }
 
@@ -33,11 +102,10 @@ export default function Home() {
           </Text>
         </View>
       </View>
-
-      <View style={{ marginTop: 24, marginBottom: 230 }}>
+      <View style={styles.bodyContainer}>
         {
           <FlatList
-            data={data?.avatars ?? []}
+            data={avatarsData?.avatars ?? []}
             contentInsetAdjustmentBehavior="always"
             renderItem={({ item, index }) => {
               return (
@@ -55,11 +123,55 @@ export default function Home() {
                       <Text>{item.price}</Text>
                     </View>
                   </View>
-                  <TouchableOpacity style={styles.buyTextContainer}>
-                    <Text weight="medium" style={styles.buyText}>
-                      BUY
-                    </Text>
-                  </TouchableOpacity>
+                  {profileData?.myProfile.avatarCollection?.find(
+                    (element) => item.id === element.id,
+                  ) ? (
+                    profileData.myProfile.avatar?.id === item.id ? (
+                      <View style={styles.buyTextContainer}>
+                        {loadingUpdateProfile ||
+                        loadingAddToAvatarCollection ? (
+                          <ActivityIndicator />
+                        ) : (
+                          <IconButton
+                            icon="check-circle-outline"
+                            color={COLORS.marigold}
+                            style={styles.icon}
+                          />
+                        )}
+                      </View>
+                    ) : (
+                      <TouchableOpacity
+                        style={styles.buyTextContainer}
+                        onPress={() => {
+                          onEquipAvatar(item.id);
+                        }}
+                      >
+                        {loadingUpdateProfile ||
+                        loadingAddToAvatarCollection ? (
+                          <ActivityIndicator />
+                        ) : (
+                          <Text weight="medium" style={styles.equipText}>
+                            EQUIP
+                          </Text>
+                        )}
+                      </TouchableOpacity>
+                    )
+                  ) : (
+                    <TouchableOpacity
+                      style={styles.buyTextContainer}
+                      onPress={() => {
+                        onBuyAvatar(item.id, item.price);
+                      }}
+                    >
+                      {loadingUpdateProfile || loadingAddToAvatarCollection ? (
+                        <ActivityIndicator />
+                      ) : (
+                        <Text weight="medium" style={styles.buyText}>
+                          BUY
+                        </Text>
+                      )}
+                    </TouchableOpacity>
+                  )}
                 </View>
               );
             }}
@@ -81,6 +193,10 @@ const styles = StyleSheet.create({
   },
   avatarName: {
     fontSize: FONT_SIZE.large,
+  },
+  bodyContainer: {
+    marginTop: 24,
+    marginBottom: 230,
   },
   buyText: {
     fontSize: FONT_SIZE.medium,
@@ -117,8 +233,15 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
   },
+  equipText: {
+    fontSize: FONT_SIZE.medium,
+    color: COLORS.marigold,
+  },
   flex: {
     flex: 1,
+  },
+  icon: {
+    margin: 0,
   },
   introText: {
     color: COLORS.white,

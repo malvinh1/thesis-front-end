@@ -13,9 +13,9 @@ import { avatars } from '../constants/avatars';
 import { Loading } from '../components';
 
 export default function MyProfile() {
-  let { navigate } = useNavigation();
+  const { navigate } = useNavigation();
 
-  let { loading, data } = useQuery<myProfile>(GET_PROFILE_DATA);
+  const { loading, data } = useQuery<myProfile>(GET_PROFILE_DATA);
 
   const onLogout = async () => {
     await asyncStorage.removeToken();
