@@ -1,11 +1,24 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
 import { Text, Avatar } from 'exoflex';
 
 import { FONT_SIZE } from '../constants/fonts';
 import { COLORS } from '../constants/colors';
+import { avatars } from '../constants/avatars';
+
+import { GET_AVATARS } from '../graphql/queries/avatarsQuery';
+
+import { Avatars } from '../generated/Avatars';
+import { Loading } from '../components';
 
 export default function Home() {
+  const { loading, data } = useQuery<Avatars>(GET_AVATARS);
+
+  if (loading) {
+    return <Loading />;
+  }
+
   return (
     <View style={styles.flex}>
       <View style={styles.navbar}>
@@ -19,48 +32,52 @@ export default function Home() {
             }
           </Text>
         </View>
-        <View style={styles.absolute}>
-          <View style={styles.contentContainer}>
-            <Avatar.Image
-              style={styles.avatar}
-              source={require('../../assets/images/avatar.png')}
-            />
-            <View style={styles.marginLeft}>
-              <Text style={styles.avatarName} weight="medium">
-                Astronaut Boy
-              </Text>
-              <View style={styles.coins}>
-                <View style={styles.yellowCoin} />
-                <Text>1000</Text>
-              </View>
-            </View>
-            <View style={styles.buyTextContainer}>
-              <Text weight="medium" style={styles.buyText}>
-                BUY
-              </Text>
-            </View>
-          </View>
-        </View>
+      </View>
+
+      <View style={{ marginTop: 24, marginBottom: 230 }}>
+        {
+          <FlatList
+            data={data?.avatars ?? []}
+            contentInsetAdjustmentBehavior="always"
+            renderItem={({ item, index }) => {
+              return (
+                <View style={styles.contentContainer} key={index}>
+                  <Avatar.Image
+                    style={styles.avatar}
+                    source={avatars[Number(item.image)].image}
+                  />
+                  <View style={styles.marginLeft}>
+                    <Text style={styles.avatarName} weight="medium">
+                      {avatars[index + 1].name}
+                    </Text>
+                    <View style={styles.coins}>
+                      <View style={styles.yellowCoin} />
+                      <Text>{item.price}</Text>
+                    </View>
+                  </View>
+                  <TouchableOpacity style={styles.buyTextContainer}>
+                    <Text weight="medium" style={styles.buyText}>
+                      BUY
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              );
+            }}
+          />
+        }
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  absolute: {
-    position: 'absolute',
-    top: 210,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
   avatar: {
     height: 70,
     width: 70,
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 16,
-    backgroundColor: '#105d53',
+    backgroundColor: COLORS.grey,
   },
   avatarName: {
     fontSize: FONT_SIZE.large,
@@ -90,6 +107,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 96,
     alignItems: 'center',
+    marginBottom: 24,
     marginHorizontal: 24,
     shadowColor: '#000',
     shadowOffset: {

@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   avatar: {
-    backgroundColor: '#105d53',
+    backgroundColor: COLORS.grey,
   },
   avatarContainer: {
     marginVertical: 18,
