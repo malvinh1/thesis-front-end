@@ -30,10 +30,6 @@ export const UPDATE_PROFILE = gql`
         image
         price
       }
-      badge {
-        id
-        name
-      }
       highestScore
       point
       progress {

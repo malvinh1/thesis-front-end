@@ -17,10 +17,6 @@ export const GET_PROFILE_DATA = gql`
         image
         price
       }
-      badge {
-        id
-        name
-      }
       highestScore
       point
       progress {

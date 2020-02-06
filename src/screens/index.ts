@@ -2,12 +2,13 @@ import About from './About';
 import AvatarCollection from './AvatarCollection';
 import BadgeCollection from './BadgeCollection';
 import ChooseCategory from './ChooseCategory';
-import SelectLevel from './SelectLevel';
+import EditProfile from './EditProfile';
 import Home from './Home';
 import Leaderboard from './Leaderboard';
 import Login from './Login';
 import MyProfile from './MyProfile';
 import Register from './Register';
+import SelectLevel from './SelectLevel';
 import Shop from './Shop';
 import Welcome from './Welcome';
 import Quiz from './Quiz';
@@ -17,12 +18,13 @@ export {
   AvatarCollection,
   BadgeCollection,
   ChooseCategory,
-  SelectLevel,
+  EditProfile,
   Home,
   Leaderboard,
   Login,
   MyProfile,
   Register,
+  SelectLevel,
   Shop,
   Welcome,
   Quiz,

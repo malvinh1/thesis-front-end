@@ -45,7 +45,7 @@ export default function MyProfile() {
             source={avatars[Number(data?.myProfile.avatar?.image ?? 0)].image}
             size={120}
             style={styles.avatar}
-          ></Avatar.Image>
+          />
         </View>
         <View style={{ alignItems: 'center' }}>
           <Text style={styles.name} weight="medium">
@@ -56,6 +56,20 @@ export default function MyProfile() {
       </View>
       <View style={styles.contentContainer}>
         <View style={styles.content}>
+          <TouchableOpacity
+            style={styles.menuTextContainer}
+            onPress={() => {
+              navigate('EditProfile');
+            }}
+          >
+            <Image
+              source={require('../../assets/images/edit.png')}
+              style={styles.badge}
+            />
+            <Text style={styles.menuText} weight="medium">
+              Edit Profile
+            </Text>
+          </TouchableOpacity>
           <TouchableOpacity
             style={styles.menuTextContainer}
             onPress={() => {
@@ -70,7 +84,6 @@ export default function MyProfile() {
               View My Badge
             </Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={styles.menuTextContainer}
             onPress={() => {

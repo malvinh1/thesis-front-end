@@ -17,6 +17,7 @@ import {
   ChooseCategory,
   SelectLevel,
   Quiz,
+  EditProfile,
 } from '../screens';
 import { COLORS } from '../constants/colors';
 
@@ -114,6 +115,7 @@ const AppNavigator = createSwitchNavigator(
     App: AppStack,
     Badge: BadgeCollection,
     ChooseCategory: ChooseCategory,
+    EditProfile: EditProfile,
     Leaderboard: Leaderboard,
     SelectLevel: SelectLevel,
     Quiz: Quiz,

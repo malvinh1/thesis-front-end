@@ -1,13 +1,21 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
 import { Text, IconButton, Avatar } from 'exoflex';
 import { useNavigation } from 'naviflex';
 
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
+import { badges } from '../constants/badges';
+
+import { GET_PROFILE_DATA } from '../graphql/queries/myProfileQuery';
+
+import { myProfile } from '../generated/myProfile';
 
 export default function BadgeCollection() {
   let { navigate } = useNavigation();
+
+  const { data } = useQuery<myProfile>(GET_PROFILE_DATA);
 
   return (
     <View style={styles.flex}>
@@ -22,20 +30,140 @@ export default function BadgeCollection() {
         </Text>
         <View />
       </View>
-      <View style={styles.contentContainer}>
-        <Avatar.Image
-          style={styles.avatar}
-          source={require('../../assets/images/medal.png')}
-        />
-        <View style={styles.marginLeft}>
-          <Text style={styles.badgeName} weight="medium">
-            Superhuman
-          </Text>
-          <Text style={styles.requirement} weight="medium">
-            Score 10,000 point
-          </Text>
+      <ScrollView>
+        <View style={styles.contentContainer}>
+          <Avatar.Image
+            style={styles.avatar}
+            source={
+              data?.myProfile.progress.CPR === 10
+                ? badges[0].image
+                : require('../../assets/images/lock.png')
+            }
+          />
+          <View style={styles.marginLeft}>
+            <Text style={styles.badgeName} weight="medium">
+              {badges[0].name}
+            </Text>
+            <Text style={styles.requirement} weight="medium">
+              {badges[0].description}
+            </Text>
+          </View>
         </View>
-      </View>
+
+        <View style={styles.contentContainer}>
+          <Avatar.Image
+            style={styles.avatar}
+            source={
+              data?.myProfile.progress.Burns === 10
+                ? badges[1].image
+                : require('../../assets/images/lock.png')
+            }
+          />
+          <View style={styles.marginLeft}>
+            <Text style={styles.badgeName} weight="medium">
+              {badges[1].name}
+            </Text>
+            <Text style={styles.requirement} weight="medium">
+              {badges[1].description}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.contentContainer}>
+          <Avatar.Image
+            style={styles.avatar}
+            source={
+              data?.myProfile.progress.NoseBleed === 10
+                ? badges[2].image
+                : require('../../assets/images/lock.png')
+            }
+          />
+          <View style={styles.marginLeft}>
+            <Text style={styles.badgeName} weight="medium">
+              {badges[2].name}
+            </Text>
+            <Text style={styles.requirement} weight="medium">
+              {badges[2].description}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.contentContainer}>
+          <Avatar.Image
+            style={styles.avatar}
+            source={
+              data?.myProfile.progress.Bruised === 10
+                ? badges[3].image
+                : require('../../assets/images/lock.png')
+            }
+          />
+          <View style={styles.marginLeft}>
+            <Text style={styles.badgeName} weight="medium">
+              {badges[3].name}
+            </Text>
+            <Text style={styles.requirement} weight="medium">
+              {badges[3].description}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.contentContainer}>
+          <Avatar.Image
+            style={styles.avatar}
+            source={
+              data?.myProfile.progress.OpenWound === 10
+                ? badges[4].image
+                : require('../../assets/images/lock.png')
+            }
+          />
+          <View style={styles.marginLeft}>
+            <Text style={styles.badgeName} weight="medium">
+              {badges[4].name}
+            </Text>
+            <Text style={styles.requirement} weight="medium">
+              {badges[4].description}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.contentContainer}>
+          <Avatar.Image
+            style={styles.avatar}
+            source={
+              data?.myProfile.progress.Cramps === 10
+                ? badges[5].image
+                : require('../../assets/images/lock.png')
+            }
+          />
+          <View style={styles.marginLeft}>
+            <Text style={styles.badgeName} weight="medium">
+              {badges[5].name}
+            </Text>
+            <Text style={styles.requirement} weight="medium">
+              {badges[5].description}
+            </Text>
+          </View>
+        </View>
+
+        <View style={styles.contentContainer}>
+          <Avatar.Image
+            style={styles.avatar}
+            source={
+              data?.myProfile.avatarCollection?.length === 9
+                ? badges[6].image
+                : require('../../assets/images/lock.png')
+            }
+          />
+          <View style={styles.marginLeft}>
+            <Text style={styles.badgeName} weight="medium">
+              {badges[6].name}
+            </Text>
+            <Text style={styles.requirement} weight="medium">
+              {badges[6].description}
+            </Text>
+          </View>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -47,7 +175,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 16,
-    backgroundColor: COLORS.marigold,
+    backgroundColor: COLORS.grey,
   },
   badgeName: {
     fontSize: FONT_SIZE.large,
@@ -59,7 +187,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 96,
     alignItems: 'center',
-    marginHorizontal: 24,
+    margin: 24,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

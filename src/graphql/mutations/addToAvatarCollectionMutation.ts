@@ -17,10 +17,6 @@ export const ADD_TO_AVATAR_COLLECTION = gql`
         image
         price
       }
-      badge {
-        id
-        name
-      }
       highestScore
       point
       progress {
