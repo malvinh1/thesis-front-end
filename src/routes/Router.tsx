@@ -18,6 +18,7 @@ import {
   SelectLevel,
   Quiz,
   EditProfile,
+  OnBoarding,
 } from '../screens';
 import { COLORS } from '../constants/colors';
 
@@ -117,12 +118,13 @@ const AppNavigator = createSwitchNavigator(
     ChooseCategory: ChooseCategory,
     EditProfile: EditProfile,
     Leaderboard: Leaderboard,
+    Onboarding: OnBoarding,
     SelectLevel: SelectLevel,
     Quiz: Quiz,
     Welcome: Welcome,
   },
   {
-    initialRouteName: 'Welcome',
+    initialRouteName: 'Onboarding',
   },
 );
 

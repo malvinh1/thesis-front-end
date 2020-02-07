@@ -7,6 +7,7 @@ import Home from './Home';
 import Leaderboard from './Leaderboard';
 import Login from './Login';
 import MyProfile from './MyProfile';
+import OnBoarding from './OnBoarding';
 import Register from './Register';
 import SelectLevel from './SelectLevel';
 import Shop from './Shop';
@@ -23,6 +24,7 @@ export {
   Leaderboard,
   Login,
   MyProfile,
+  OnBoarding,
   Register,
   SelectLevel,
   Shop,

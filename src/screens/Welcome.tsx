@@ -1,27 +1,15 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet, SafeAreaView, Image } from 'react-native';
 import { Text, Button } from 'exoflex';
 import { useNavigation } from 'naviflex';
 
 import { COLORS } from '../constants/colors';
 import { FONT_SIZE } from '../constants/fonts';
-import asyncStorage from '../helpers/asyncStorage';
 
 export default function Welcome() {
   let { navigate } = useNavigation();
   let src = require('../../assets/images/welcomeAsset.png');
-
-  useEffect(() => {
-    const getToken = async () => {
-      let token = await asyncStorage.getToken();
-      if (token) {
-        navigate('Home');
-        return;
-      }
-    };
-    getToken();
-  }, [navigate]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -31,7 +19,6 @@ export default function Welcome() {
         </Text>
         <Image source={src} style={styles.imageWelcome} />
       </View>
-
       <View style={styles.bottomContainer}>
         <Button
           style={styles.buttonDefaultStyle}
